@@ -1,0 +1,6 @@
+{% extends "units/base.html" %}
+{% block title %}Fight #{{ fight.remote_fight_id }} · War simulator{% endblock %}
+{% block content %}
+  <section class="panel"><h1>{{ fight.blue_soldier.name }} vs {{ fight.red_soldier.name }}</h1><p>Import: {{ fight.get_import_status_display }} · Replay: {{ fight.get_replay_status_display }}</p>{% if fight.error_detail %}<p class="errors">{{ fight.error_detail }}</p>{% endif %}</section>
+  <section class="panel"><h2>Persisted steps</h2><ol class="turns">{% for step in steps %}<li>{{ step.attacker.name }} attacked {{ step.defender.name }} for {{ step.damage }} damage{% if step.defender_health_after != None %}; defender health after: {{ step.defender_health_after }}{% endif %}.</li>{% empty %}<li>No steps were stored.</li>{% endfor %}</ol></section>
+{% endblock %}

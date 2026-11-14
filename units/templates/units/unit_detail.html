@@ -1,0 +1,40 @@
+{% extends "units/base.html" %}
+{% block title %}{{ fighter.name }} · War simulator{% endblock %}
+{% block content %}
+  <section class="panel">
+    <div class="fighter-profile">
+      <img class="avatar" src="{{ fighter.profile_image_link }}" alt="{{ fighter.name }} profile picture">
+      <div><h1>{{ fighter.name }}</h1><p>{{ fighter.get_team_display }} {{ fighter.get_unit_type_display }} · Health {{ fighter.health }}/100 · Attack {{ fighter.attack_points }}</p></div>
+    </div>
+  </section>
+  <section class="panel">
+    <h2>Edit fighter</h2>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <p>
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}{% for error in field.errors %}<span class="errors">{{ error }}</span>{% endfor %}
+        </p>
+      {% endfor %}
+      <button type="submit">Save changes</button>
+    </form>
+  </section>
+  <section>
+    <h2>Fight history</h2>
+    {% for fight in fights %}
+      <article class="history-card">
+        <strong>{{ fight.first_fighter.name }} vs {{ fight.second_fighter.name }}</strong>
+        <p>{% if fight.is_stalemate %}Stalemate: neither fighter can cause damage.{% else %}Winner: {{ fight.winner.name }}{% endif %}</p>
+        <p class="muted">{{ fight.created_at|date:"j M Y, H:i" }} · {{ fight.turns.count }} turns</p>
+        {% if not fight.is_stalemate %}
+          <ol class="turns">
+            {% for turn in fight.turns.all %}<li>{{ turn.attacker.name }} → {{ turn.defender.name }}: {{ turn.damage }} damage ({{ turn.attacker_health }} / {{ turn.defender_health }} health)</li>{% endfor %}
+          </ol>
+        {% endif %}
+        <a class="button" href="{% url 'units:fight_detail' fight.pk %}">View full history</a>
+      </article>
+    {% empty %}<div class="panel"><p>This fighter has not fought yet.</p></div>{% endfor %}
+  </section>
+{% endblock %}

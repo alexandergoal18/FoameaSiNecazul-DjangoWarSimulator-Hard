@@ -1,0 +1,6 @@
+{% extends "units/base.html" %}
+{% block title %}Simulate imported fights · War simulator{% endblock %}
+{% block content %}
+  <section class="panel"><h1>Replay imported fights</h1><p>Each fight is replayed in its own background task. Fights that share a person wait for that person's transaction lock.</p><form method="post" action="{% url 'hardchallenge:start_simulation' %}">{% csrf_token %}<button type="submit">Queue eligible fights</button></form></section>
+  <section class="panel"><h2>Results</h2><table class="stats"><thead><tr><th>Fight</th><th>Blue</th><th>Red</th><th>Replay status</th><th>Current health</th></tr></thead><tbody>{% for fight in fights %}<tr><td><a href="{% url 'hardchallenge:fight_detail' fight.pk %}">#{{ fight.remote_fight_id }}</a></td><td>{{ fight.blue_soldier.name }}</td><td>{{ fight.red_soldier.name }}</td><td>{{ fight.get_replay_status_display }}</td><td>{{ fight.blue_soldier.health|default:"—" }} / {{ fight.red_soldier.health|default:"—" }}</td></tr>{% empty %}<tr><td colspan="5">Import fight pages before replaying them.</td></tr>{% endfor %}</tbody></table></section>
+{% endblock %}

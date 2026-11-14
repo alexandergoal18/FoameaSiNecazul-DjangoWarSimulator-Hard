@@ -1,0 +1,15 @@
+{% extends "units/base.html" %}
+{% block title %}Fight #{{ fight.pk }} · War simulator{% endblock %}
+{% block content %}
+  <section class="panel">
+    <h1>{{ fight.first_fighter.name }} vs {{ fight.second_fighter.name }}</h1>
+    {% if fight.is_stalemate %}<p>The fight ended in a stalemate because both fighters have zero attack points.</p>{% else %}<p>Winner: <strong>{{ fight.winner.name }}</strong></p>{% endif %}
+    <p><a href="{% url 'units:detail' fight.first_fighter.pk %}">{{ fight.first_fighter.name }}</a> and <a href="{% url 'units:detail' fight.second_fighter.pk %}">{{ fight.second_fighter.name }}</a></p>
+  </section>
+  <section class="panel">
+    <h2>Turn-by-turn history</h2>
+    <ol class="turns">
+      {% for turn in turns %}<li><strong>Turn {{ turn.turn_number }}:</strong> {{ turn.attacker.name }} attacked {{ turn.defender.name }} for {{ turn.damage }} damage. {{ turn.attacker.name }}: {{ turn.attacker_health }} health; {{ turn.defender.name }}: {{ turn.defender_health }} health.</li>{% empty %}<li>No attacks were made.</li>{% endfor %}
+    </ol>
+  </section>
+{% endblock %}

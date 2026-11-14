@@ -1,0 +1,9 @@
+{% extends "units/base.html" %}
+{% block title %}Imported fights · War simulator{% endblock %}
+{% block content %}
+  <section class="panel"><h1>Imported fight events</h1>
+    <table class="stats"><thead><tr><th>Remote fight</th><th>Blue soldier</th><th>Red soldier</th><th>Steps</th><th>Import</th><th>Replay</th></tr></thead>
+      <tbody>{% for fight in fights %}<tr><td><a href="{% url 'hardchallenge:fight_detail' fight.pk %}">#{{ fight.remote_fight_id }}</a></td><td>{{ fight.blue_soldier.name }}</td><td>{{ fight.red_soldier.name }}</td><td>{{ fight.step_count }}</td><td>{{ fight.get_import_status_display }}</td><td>{{ fight.get_replay_status_display }}</td></tr>{% empty %}<tr><td colspan="6">No fight batches have been imported.</td></tr>{% endfor %}</tbody>
+    </table>
+  </section>
+{% endblock %}

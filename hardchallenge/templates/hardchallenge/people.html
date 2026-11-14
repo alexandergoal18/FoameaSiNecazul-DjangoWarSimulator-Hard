@@ -1,0 +1,9 @@
+{% extends "units/base.html" %}
+{% block title %}Drafted people · War simulator{% endblock %}
+{% block content %}
+  <section class="panel"><h1>People and drafted soldiers</h1>
+    <table class="stats"><thead><tr><th>ID</th><th>Name</th><th>Age</th><th>Rank</th><th>Health</th></tr></thead>
+      <tbody>{% for person in people %}<tr><td>{{ person.external_id }}</td><td>{{ person.name }}</td><td>{{ person.age }}</td><td>{{ person.rank|default:"Not drafted" }}</td><td>{% if person.health != None %}{{ person.health }}{% else %}—{% endif %}</td></tr>{% empty %}<tr><td colspan="5">No people have been imported.</td></tr>{% endfor %}</tbody>
+    </table>
+  </section>
+{% endblock %}

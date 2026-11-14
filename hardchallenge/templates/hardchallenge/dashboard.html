@@ -1,0 +1,14 @@
+{% extends "units/base.html" %}
+{% block title %}Hard challenge · War simulator{% endblock %}
+{% block content %}
+  <section class="panel">
+    <h1>Hard challenge import</h1>
+    <p>Imports <code>/people</code>, follows paginated <code>/draft/&lt;n&gt;</code> and <code>/fight/&lt;n&gt;</code> endpoints, and dispatches Celery work in the background.</p>
+    <form method="post" action="{% url 'hardchallenge:start_import' %}">{% csrf_token %}<button type="submit">Start remote import</button></form>
+  </section>
+  <section class="panel">
+    <h2>Current state</h2>
+    <p>{{ people_count }} people · {{ drafted_count }} drafted · {{ imported_fight_count }}/{{ fight_count }} fights imported</p>
+    {% if latest_run %}<p><strong>Latest run:</strong> {{ latest_run.get_status_display }} — {{ latest_run.detail }}</p>{% else %}<p class="muted">No import has been queued.</p>{% endif %}
+  </section>
+{% endblock %}

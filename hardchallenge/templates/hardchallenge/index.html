@@ -1,0 +1,15 @@
+{% extends "units/base.html" %}
+{% block title %}War simulator{% endblock %}
+{% block content %}
+  <section class="panel">
+    <h1>War simulator challenges</h1>
+    <p class="muted">The easy and hard challenges use separate data and pages.</p>
+  </section>
+  <section class="grid">
+    <article class="history-card"><h2>Easy challenge</h2><p>Create units, simulate random fights, and inspect history.</p><a class="button" href="{% url 'units:all' %}">All units</a> <a class="button" href="{% url 'units:create' %}">Add unit</a></article>
+    <article class="history-card"><h2>Hard dashboard</h2><p>Import people and open the remote drafting and fight pipelines.</p><a class="button" href="{% url 'hardchallenge:dashboard' %}">Open dashboard</a></article>
+    <article class="history-card"><h2>Drafted people</h2><p>View imported people, their ranks, and current health.</p><a class="button" href="{% url 'hardchallenge:people' %}">View people</a></article>
+    <article class="history-card"><h2>Fight events</h2><p>Inspect every stored remote fight and its ordered steps.</p><a class="button" href="{% url 'hardchallenge:fights' %}">View fights</a></article>
+    <article class="history-card"><h2>Simulation</h2><p>Replay eligible fights in parallel Celery tasks.</p><a class="button" href="{% url 'hardchallenge:simulate' %}">Open /simulate</a></article>
+  </section>
+{% endblock %}

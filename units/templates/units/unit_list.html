@@ -1,0 +1,46 @@
+{% extends "units/base.html" %}
+{% block title %}All units · War simulator{% endblock %}
+{% block content %}
+  <section class="panel">
+    <h1>All fighters</h1>
+    <p class="muted">Select one Blue and one Red unit to simulate their fight.</p>
+    <form class="fight-form" method="post" action="{% url 'units:simulate' %}">
+      {% csrf_token %}
+      {{ fight_form.non_field_errors }}
+      {% for field in fight_form %}
+        <p><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<span class="errors">{{ error }}</span>{% endfor %}</p>
+      {% endfor %}
+      <button type="submit">Simulate</button>
+    </form>
+  </section>
+
+  {% if fighters %}
+    <section class="grid" aria-label="Fighters">
+      {% for fighter in fighters %}
+        <article class="fighter-card">
+          <a class="fighter-link" href="{% url 'units:detail' fighter.pk %}">
+            <img class="avatar" src="{{ fighter.profile_image_link }}" alt="{{ fighter.name }} profile picture">
+            <div><h2>{{ fighter.name }}</h2><p>{{ fighter.get_team_display }} · {{ fighter.get_unit_type_display }}</p></div>
+          </a>
+          <p>Health: <strong>{{ fighter.health }}/100</strong> · Attack: <strong>{{ fighter.attack_points }}</strong></p>
+          {% if fighter.health < 100 %}
+            <form method="post" action="{% url 'units:heal' fighter.pk %}">{% csrf_token %}<button class="heal" type="submit">Heal</button></form>
+          {% endif %}
+          <form method="post" action="{% url 'units:delete' fighter.pk %}" onsubmit="return confirm('Delete {{ fighter.name|escapejs }} and its related fight history?');">
+            {% csrf_token %}<button class="delete" type="submit">Delete</button>
+          </form>
+        </article>
+      {% endfor %}
+    </section>
+  {% else %}
+    <section class="panel"><p>No fighters yet. <a href="{% url 'units:create' %}">Add the first fighter.</a></p></section>
+  {% endif %}
+
+  <section class="panel" style="margin-top: 1.5rem;">
+    <h2>Team statistics</h2>
+    <table class="stats">
+      <thead><tr><th>Team</th><th>Fights</th><th>Damage caused</th><th>Damage taken</th></tr></thead>
+      <tbody>{% for stat in team_stats %}<tr><td>{{ stat.team }}</td><td>{{ stat.fights }}</td><td>{{ stat.damage_caused }}</td><td>{{ stat.damage_taken }}</td></tr>{% endfor %}</tbody>
+    </table>
+  </section>
+{% endblock %}

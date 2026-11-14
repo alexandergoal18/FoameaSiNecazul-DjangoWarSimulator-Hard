@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}War simulator{% endblock %}</title>
+  <style>
+    :root { color-scheme: light; font-family: Arial, sans-serif; color: #192235; background: #f3f6fb; }
+    body { margin: 0; }
+    header { background: #17213a; color: white; padding: 1rem max(1.25rem, calc((100% - 1100px) / 2)); display: flex; align-items: center; gap: 1.25rem; }
+    header a { color: white; text-decoration: none; } header .brand { font-weight: 700; font-size: 1.2rem; margin-right: auto; }
+    main { max-width: 1100px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+    h1, h2 { margin-top: 0; } .panel, .fighter-card, .history-card { background: white; border: 1px solid #dfe5ef; border-radius: 10px; box-shadow: 0 2px 8px #17213a0c; }
+    .panel { padding: 1.25rem; margin-bottom: 1.5rem; } .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
+    .fighter-card { padding: 1rem; display: flex; flex-direction: column; gap: .7rem; } .fighter-link { color: inherit; text-decoration: none; display: flex; align-items: center; gap: .75rem; }
+    .fighter-link:hover h2 { text-decoration: underline; } .avatar { width: 50px; height: 50px; object-fit: cover; border-radius: 50%; background: #dfe5ef; }
+    .fighter-card h2 { font-size: 1.1rem; margin: 0 0 .2rem; } .fighter-card p { margin: 0; color: #536176; }
+    form p { display: grid; gap: .35rem; } input, select { box-sizing: border-box; padding: .55rem; border: 1px solid #b9c5d7; border-radius: 5px; font: inherit; width: 100%; }
+    button, .button { border: 0; border-radius: 5px; background: #2459a6; color: white; padding: .6rem .85rem; font: inherit; cursor: pointer; text-decoration: none; display: inline-block; }
+    button:hover, .button:hover { background: #194782; } .heal { background: #19713b; width: 100%; } .heal:hover { background: #105c2d; }
+    .delete { background: #b3263a; width: 100%; } .delete:hover { background: #8d1728; }
+    .message { padding: .8rem 1rem; margin-bottom: 1rem; border-radius: 6px; background: #def4e5; color: #155b2d; } .errors { color: #a91d2d; }
+    .fight-form { display: grid; grid-template-columns: 1fr 1fr auto; align-items: end; gap: 1rem; } .fight-form p { margin: 0; }
+    .stats { width: 100%; border-collapse: collapse; } .stats th, .stats td { padding: .65rem; text-align: left; border-bottom: 1px solid #e4e8f0; }
+    .history-card { padding: 1rem; margin: .75rem 0; } .history-card p { margin: .35rem 0; } .muted { color: #536176; }
+    .turns { padding-left: 1.4rem; } .turns li { margin: .55rem 0; } .fighter-profile { display: flex; align-items: center; gap: 1rem; }
+    @media (max-width: 650px) { .fight-form { grid-template-columns: 1fr; } header { flex-wrap: wrap; } }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="{% url 'units:all' %}">War simulator</a>
+    <a href="/">Home</a>
+    <a href="{% url 'units:all' %}">All units</a>
+    <a href="{% url 'units:create' %}">Add unit</a>
+    <a href="{% url 'hardchallenge:dashboard' %}">Hard challenge</a>
+  </header>
+  <main>
+    {% for message in messages %}<div class="message">{{ message }}</div>{% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
